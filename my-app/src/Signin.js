@@ -1,6 +1,10 @@
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './Signin.css';
 
 export default function Signin() {
+  const [role, setRole] = useState('investor');
+
   return (
     <div className="ps-page">
       <div className="ps-hero">
@@ -20,17 +24,44 @@ export default function Signin() {
             <h3 className="panel-title">SIGN IN TO CONTINUE</h3>
           </div>
 
+          {/* Role selector - Investor / Founder */}
+          <div className="form-row role-row">
+            <label
+              className={`role-option ${role === 'investor' ? 'selected' : ''}`}
+              onClick={() => setRole('investor')}
+            >
+              <input type="radio" name="role" value="investor" checked={role === 'investor'} readOnly />
+              INVESTOR
+            </label>
+
+            <label
+              className={`role-option ${role === 'founder' ? 'selected' : ''}`}
+              onClick={() => setRole('founder')}
+            >
+              <input type="radio" name="role" value="founder" checked={role === 'founder'} readOnly />
+              FOUNDER
+            </label>
+          </div>
+
           <div className="form-row">
             <input className="pill" placeholder="ENTER EMAIL OR USERNAME" />
           </div>
           <div className="form-row small-row">
             <input className="pill" placeholder="ENTER PASSWORD" type="password" />
-            <button className="btn-proceed">PROCEED</button>
+            <button
+              className="btn-proceed"
+              onClick={() => console.log('Proceeding sign-in as:', role)}
+            >
+              PROCEED
+            </button>
           </div>
 
           <div className="or-get">OR GET STARTED TODAY !</div>
 
-          <button className="btn-cta">JOIN THE WORLD OF PITCH SPHERE</button>
+          <div className="signup-choices">
+            <Link to="/signup/founder" className="btn-cta">JOIN AS FOUNDER</Link>
+            <Link to="/signup/investor" className="btn-cta secondary">JOIN AS INVESTOR</Link>
+          </div>
         </div>
       </aside>
     </div>
