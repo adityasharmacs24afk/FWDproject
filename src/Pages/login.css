@@ -1,0 +1,111 @@
+/* Full page center */
+.login-container {
+  height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, white, #f4f0ff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Card */
+.login-card {
+  width: 380px;
+  padding: 40px 45px;
+  background: white;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(108, 76, 255, 0.25);
+  animation: fadeIn 0.6s ease;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #6c4cff;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: #777;
+  margin-bottom: 25px;
+}
+
+/* Dropdown */
+.role-dropdown {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #6c4cff;
+  border-radius: 10px;
+  font-size: 16px;
+  outline: none;
+  color: #6c4cff;
+  font-weight: 600;
+  background: white;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.role-dropdown:hover {
+  background: #f4f0ff;
+}
+
+/* Input fields */
+.input-box {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 2px solid #ddd;
+  margin-bottom: 15px;
+  font-size: 16px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.input-box:focus {
+  border-color: #6c4cff;
+  box-shadow: 0 0 8px rgba(108, 76, 255, 0.25);
+}
+
+/* Login Button */
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 12px;
+  border: none;
+  background: #6c4cff;
+  color: white;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  box-shadow: 0 8px 20px rgba(108, 76, 255, 0.4);
+  transform: translateY(-3px);
+}
+
+/* Bottom text */
+.bottom-text {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+.signup-link {
+  color: #6c4cff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}
+
+/* Fade Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
