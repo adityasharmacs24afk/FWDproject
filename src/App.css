@@ -148,12 +148,14 @@ body {
   cursor: pointer;
   border: none;
   font-size: 0.875rem;
+  border: solid 2px var(--primary-purple-light);
+  
 }
 
 .btn-auth {
   background:bottom;
   color: var(--primary-purple);
-  border: 1px solid var(--primary-purple);
+  
 }
 
 .btn-auth:hover {
@@ -272,7 +274,11 @@ main {
   font-size: 1rem;
   font-weight: 600;
   box-shadow: var(--shadow);
+
+
 }
+
+
 
 .btn-primary:hover {
   transform: translateY(-2px);
