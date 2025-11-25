@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";   // ✅ ADDED
 import "./App.css";
 
 export default function App() {
   const [selectedRole, setSelectedRole] = useState(null);
+  const navigate = useNavigate();                      // ✅ ADDED
 
   // IntersectionObserver for scroll animations
   useEffect(() => {
@@ -11,7 +13,7 @@ export default function App() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("in-view");
-            observer.unobserve(entry.target); // one-time reveal
+            observer.unobserve(entry.target);
           }
         });
       },
@@ -33,7 +35,8 @@ export default function App() {
       alert("Please choose a role: Idea Poster, Investor or Visitor");
       return;
     }
-    alert(`Get started as: ${selectedRole.label}`);
+
+    navigate("/login");     // ✅ Redirects to Login page
   };
 
   return (
@@ -52,13 +55,12 @@ export default function App() {
 
             {/* AUTH BUTTONS IN NAVBAR */}
             <div className="nav-auth">
-              {/* Both buttons use the same visual style (.btn-auth) */}
-              <a className="btn btn-auth" href="/login" title="Login">
+              <Link className="btn btn-auth" to="/login">
                 Login
-              </a>
-              <a className="btn btn-auth" href="/signup" title="Sign up">
+              </Link>
+              <Link className="btn btn-auth" to="/signup">
                 Sign Up
-              </a>
+              </Link>
             </div>
           </nav>
         </div>
@@ -92,7 +94,6 @@ export default function App() {
             </div>
 
             <div className="hero-actions">
-              {/* Use same base style but with different modifier classes for subtle variation */}
               <button className="btn btn-primary" onClick={handleGetStarted}>
                 Get Started
               </button>
@@ -137,9 +138,21 @@ export default function App() {
             </div>
 
             <div className="feature" data-animate>
-              <div className="icon">🤝</div>
+              <div className="icon">🌐</div>
               <h4>Direct Connections</h4>
               <p>Secure messaging and virtual meetings to discuss ideas and negotiate terms.</p>
+            </div>
+
+            <div className="feature" data-animate>
+              <div className="icon">📈</div>
+              <h4>Market Cap</h4>
+              <p>Get to know the market cap of your idea</p>
+            </div>
+
+            <div className="feature" data-animate>
+              <div className="icon">🤝</div>
+              <h4>Team Builder & Collaboration</h4>
+              <p>Find co-founders, designers, or developers directly inside the platform.</p>
             </div>
           </div>
         </section>
