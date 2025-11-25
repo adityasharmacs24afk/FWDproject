@@ -1,0 +1,394 @@
+.investor-dashboard {
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  min-height: 100vh;
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+  font-size: 2rem;
+  color: #6B46C1;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-header p {
+  color: #666;
+  font-size: 1rem;
+}
+
+/* Summary Cards */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.card {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(107, 70, 193, 0.1);
+  border-left: 4px solid #6B46C1;
+}
+
+.card h3 {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+}
+
+.card .amount {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.card.gain {
+  border-left-color: #8B5CF6;
+}
+
+.card.gain .percentage {
+  color: #8B5CF6;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* Invested Ideas Section */
+.invested-ideas-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(107, 70, 193, 0.1);
+  margin-bottom: 3rem;
+}
+
+.invested-ideas-section h2 {
+  color: #6B46C1;
+  margin-bottom: 1.5rem;
+}
+
+.search-container {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #6B46C1;
+  box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  pointer-events: none;
+  color: #999;
+}
+
+.ideas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.idea-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  background: #f8fafc;
+  transition: all 0.3s ease;
+}
+
+.idea-card:hover {
+  box-shadow: 0 4px 12px rgba(107, 70, 193, 0.15);
+  transform: translateY(-2px);
+  border-color: #8B5CF6;
+}
+
+.idea-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.idea-card h3 {
+  color: #333;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.idea-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.idea-status.active {
+  background: #ddd6fe;
+  color: #6B46C1;
+}
+
+.idea-status.pending {
+  background: #fce7f3;
+  color: #9f1239;
+}
+
+.idea-card p {
+  margin: 0.5rem 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.founder,
+.category {
+  display: flex;
+  justify-content: space-between;
+}
+
+.idea-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.invested-amount {
+  display: flex;
+  flex-direction: column;
+}
+
+.invested-amount .label {
+  color: #999;
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.invested-amount .amount {
+  color: #8B5CF6;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.btn-view-idea {
+  background: #6B46C1;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-view-idea:hover {
+  background: #553C9A;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(107, 70, 193, 0.3);
+}
+
+.no-results {
+  text-align: center;
+  padding: 2rem;
+  color: #999;
+}
+
+.no-results p {
+  font-size: 1rem;
+}
+
+/* Investments Section */
+.investments-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(107, 70, 193, 0.1);
+  margin-bottom: 3rem;
+}
+
+.investments-section h2 {
+  color: #6B46C1;
+  margin-bottom: 1.5rem;
+}
+
+.investments-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.investments-table th {
+  background: #f8fafc;
+  color: #666;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #8B5CF6;
+}
+
+.investments-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #333;
+}
+
+.gain-cell {
+  color: #8B5CF6;
+  font-weight: bold;
+}
+
+.status {
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status.active {
+  background: #ddd6fe;
+  color: #6B46C1;
+}
+
+.status.pending {
+  background: #fce7f3;
+  color: #9f1239;
+}
+
+/* Transactions Section */
+.transactions-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(107, 70, 193, 0.1);
+  margin-bottom: 3rem;
+}
+
+.transactions-section h2 {
+  color: #6B46C1;
+  margin-bottom: 1.5rem;
+}
+
+.transactions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 6px;
+  border-left: 4px solid #8B5CF6;
+}
+
+.transaction-info .type {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.3rem;
+}
+
+.transaction-info .description {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.transaction-amount .amount {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.3rem;
+}
+
+.transaction-amount .date {
+  color: #999;
+  font-size: 0.85rem;
+}
+
+/* Actions Section */
+.actions-section {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: #6B46C1;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #553C9A;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(107, 70, 193, 0.3);
+}
+
+.btn-secondary {
+  background: #8B5CF6;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #7C3AED;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+@media (max-width: 768px) {
+  .investor-dashboard {
+    padding: 1rem;
+  }
+
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .investments-table {
+    font-size: 0.9rem;
+  }
+
+  .transaction-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .transaction-amount {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}

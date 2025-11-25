@@ -55,10 +55,10 @@ export default function App() {
 
             {/* AUTH BUTTONS IN NAVBAR */}
             <div className="nav-auth">
-              <Link className="btn btn-auth" to="/login">
+              <Link className="btn btn-auth" to="/login"   style={{border: "solid" , borderWidth : "thin", borderColor: "purple" }}>
                 Login
               </Link>
-              <Link className="btn btn-auth" to="/signup">
+              <Link className="btn btn-auth" to="/signup"   style={{border: "solid" , borderWidth : "thin", borderColor: "purple" }}>
                 Sign Up
               </Link>
             </div>
@@ -97,7 +97,7 @@ export default function App() {
               <button className="btn btn-primary" onClick={handleGetStarted}>
                 Get Started
               </button>
-              <a className="btn btn-outline" href="#how">How it works</a>
+              <a className="btn btn-outline" href="#how"   style={{border: "solid" , borderWidth : "thin", borderColor: "purple" }}>How it works</a>
             </div>
           </div>
 
