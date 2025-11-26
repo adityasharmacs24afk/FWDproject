@@ -1,19 +1,22 @@
+// src/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../lib/supabaseClient";
+
 import "./login.css";
 
 /**
- * Login component — keeps original look & classes but adds:
- * - email/password state + validation
- * - role selection (Investor / Founder / Visitor)
- * - redirect to /investor-dashboard when Investor logs in
- * - a small illustration using the uploaded file path
+ * Supabase-integrated Login component
+ * - Uses shared client from src/lib/supabaseClient.js
+ * - Preserves all existing classes/structure
  */
+
 export default function Login() {
   const [role, setRole] = useState("Investor");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const roleLabels = {
@@ -22,7 +25,7 @@ export default function Login() {
     Visitor: "Visitor",
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
@@ -36,14 +39,93 @@ export default function Login() {
       return;
     }
 
-    // Simulated authentication (replace with real API call)
-    // If role is Investor, navigate to investor dashboard
-    if (role === "Investor") {
-      // pass role via state if you want: navigate('/investor-dashboard', { state: { role } })
-      navigate("/investor-dashboard");
-    } else {
-      // temporary behavior for Founder / Visitor
-      alert(`Welcome, ${roleLabels[role]}! This feature is coming soon.`);
+    setLoading(true);
+
+    try {
+      // Sign in with Supabase
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password: password
+      });
+
+      if (signInError) {
+        // Authentication error
+        setError(signInError.message || "Login failed. Check your credentials.");
+        setLoading(false);
+        return;
+      }
+
+      // Get user (v2)
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        setError("Login succeeded but user info not available. Try again.");
+        setLoading(false);
+        return;
+      }
+
+      const userId = user.id;
+
+      // Check for existing profile
+      const { data: existingProfile, error: profileErr } = await supabase
+        .from("profiles")
+        .select("id, role, name")
+        .eq("id", userId)
+        .maybeSingle();
+
+      if (profileErr) {
+        console.warn("profiles query error:", profileErr);
+        // continue — we'll attempt to create if missing
+      }
+
+      // If no profile exists, create one with the selected role
+      if (!existingProfile) {
+        const profileInsert = {
+          id: userId,
+          role: role.toLowerCase(), // store lowercase to match schema convention
+          name: email.split("@")[0] // default name from email local-part
+        };
+
+        const { error: insertErr } = await supabase
+          .from("profiles")
+          .insert(profileInsert, { returning: "representation" });
+
+        if (insertErr) {
+          // profile creation failed but auth succeeded — show error
+          setError("Signed in but failed to create profile. Contact support.");
+          setLoading(false);
+          return;
+        }
+      } else {
+        // If profile exists but role mismatches selection, handle gracefully:
+        const normalizedExistingRole = (existingProfile.role || "").toLowerCase();
+        const normalizedSelected = role.toLowerCase();
+        if (normalizedExistingRole && normalizedExistingRole !== normalizedSelected) {
+          // Don't overwrite silently: inform the user and stop to avoid accidental role switches.
+          setError(
+            `Your account role is "${existingProfile.role}". To sign in as "${role}" choose the correct role or update your profile.`
+          );
+          setLoading(false);
+          return;
+        }
+      }
+
+      // Navigate according to role selection
+      if (role === "Investor") {
+        navigate("/investor-dashboard");
+      } else if (role === "Founder") {
+        navigate("/founder-dashboard");
+      } else {
+        // Visitor or fallback
+        navigate("/");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError(err?.message || "An unexpected error occurred during login.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -102,8 +184,8 @@ export default function Login() {
             {error && <div className="error-message" role="alert">{error}</div>}
 
             {/* Login Button */}
-            <button type="submit" className="login-btn">
-              Login
+            <button type="submit" className="login-btn" disabled={loading}>
+              {loading ? "Signing in…" : "Login"}
             </button>
           </form>
 
