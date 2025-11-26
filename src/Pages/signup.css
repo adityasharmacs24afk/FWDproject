@@ -1,0 +1,142 @@
+/* signup.css — purple + white theme with role chips */
+
+.signup-container {
+  width: 100%;
+  min-height: 100vh;
+  background: #f7f3ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.signup-card {
+  width: 480px;
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(90, 43, 200, 0.06);
+  text-align: left;
+}
+
+.signup-card h1 {
+  font-size: 26px;
+  color: #4b2fb8;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 18px;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.signup-form label {
+  color: #4b2fb8;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.signup-form input[type="email"],
+.signup-form input[type="password"],
+.signup-form select,
+.signup-form input[type="file"] {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 15px;
+  border-radius: 10px;
+  border: 1.5px solid #efe6ff;
+  outline: none;
+  transition: 0.18s;
+}
+
+.signup-form input:focus,
+.signup-form select:focus {
+  border-color: #7a4bff;
+  box-shadow: 0 0 6px rgba(122, 75, 255, 0.12);
+}
+
+.role-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.role-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #faf7ff;
+  color: #5a2bc8;
+  cursor: pointer;
+  border: 1px solid transparent;
+  user-select: none;
+  font-weight: 700;
+}
+
+.role-chip input {
+  display: none;
+}
+
+.role-chip.active {
+  background: linear-gradient(90deg, #7a4bff, #5a2bc8);
+  color: white;
+  box-shadow: 0 8px 20px rgba(90, 43, 200, 0.12);
+  border: 1px solid rgba(90, 43, 200, 0.12);
+}
+
+.investor-proof {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hint {
+  font-size: 12px;
+  color: #777;
+}
+
+.signup-btn {
+  width: 100%;
+  padding: 12px;
+  background: #6b35ff;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: 0.18s;
+}
+
+.signup-btn:hover {
+  transform: translateY(-1px);
+  background: #5826e9;
+}
+
+.error {
+  color: crimson;
+  font-size: 13px;
+  margin-top: -4px;
+}
+
+.login-link {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+  text-align: center;
+}
+
+.login-link span {
+  color: #6b35ff;
+  font-weight: 700;
+  cursor: pointer;
+}
