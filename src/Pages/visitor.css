@@ -1,0 +1,116 @@
+/* MAIN WRAPPER */
+.visitor-wrapper {
+  width: 100%;
+  background: #fafafa;
+  padding-bottom: 50px;
+  font-family: sans-serif;
+}
+
+/* HERO SECTION */
+.visitor-hero {
+  text-align: center;
+  padding: 80px 20px;
+  background: #7b4bff;
+  color: white;
+}
+
+.visitor-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.visitor-hero p {
+  opacity: 0.9;
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: white;
+  color: #7b4bff;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.15s;
+}
+
+.btn-primary:hover {
+  background: #ece3ff;
+}
+
+/* SECTION */
+.section-block {
+  padding: 40px 20px;
+}
+
+.section-title {
+  font-size: 1.7rem;
+  margin-bottom: 20px;
+}
+
+/* IDEAS GRID */
+.ideas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+/* IDEA CARD */
+.idea-card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  transition: 0.2s;
+}
+
+.idea-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+.industry-tag {
+  color: #7b4bff;
+  font-weight: bold;
+  margin: 6px 0;
+}
+
+.summary {
+  color: #555;
+  margin-bottom: 12px;
+}
+
+/* VIEW BUTTON */
+.view-btn {
+  background: #7b4bff;
+  color: white;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.view-btn:hover {
+  opacity: 0.85;
+}
+
+/* CTA SECTION */
+.visitor-cta {
+  background: #f1eaff;
+  text-align: center;
+  padding: 60px 20px;
+  margin-top: 40px;
+}
+
+.visitor-cta h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.visitor-cta p {
+  margin-bottom: 20px;
+  color: #555;
+}

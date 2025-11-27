@@ -8,6 +8,7 @@ import Signup from "./Pages/signup.jsx";
 import InvestorDashboard from "./Pages/InvestorDashboard.jsx";
 import InvestorFeed from "./Pages/InvestorFeed.jsx";
 import InvestorProfile from "./Pages/InvestorProfile.jsx";
+import Visitor from "./Pages/Visitor.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -19,6 +20,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Route path="/investor-dashboard" element={<InvestorDashboard />} />
       <Route path="/investor-feed" element={<InvestorFeed />} />
       <Route path="/investor-profile" element={<InvestorProfile />} />
+      <Route path="/visitor" element={<Visitor/>}/>
     </Routes>
   </BrowserRouter>
 );
