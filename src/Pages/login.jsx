@@ -1,15 +1,8 @@
-// src/Login.jsx
+// src/Pages/login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabaseClient";
-
 import "./login.css";
-
-/**
- * Supabase-integrated Login component
- * - Uses shared client from src/lib/supabaseClient.js
- * - Preserves all existing classes/structure
- */
 
 export default function Login() {
   const [role, setRole] = useState("Investor");
@@ -25,39 +18,69 @@ export default function Login() {
     Visitor: "Visitor",
   };
 
+  // helper: wait for a session for up to timeoutMs
+  async function waitForSession(timeoutMs = 8000, intervalMs = 300) {
+    const start = Date.now();
+    while (Date.now() - start < timeoutMs) {
+      try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        // v2 shape: sessionData?.session
+        const session = sessionData?.session ?? sessionData;
+        if (session?.access_token || (sessionData && Object.keys(sessionData).length)) {
+          return session;
+        }
+      } catch (e) {
+        console.warn("waitForSession getSession error:", e);
+      }
+      await new Promise((r) => setTimeout(r, intervalMs));
+    }
+    return null;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
-    // Basic validation
     if (!email.trim() || !password.trim()) {
       setError("Please enter both email and password.");
+      setLoading(false);
       return;
     }
     if (!email.includes("@") || email.length < 5) {
       setError("Please enter a valid email address.");
+      setLoading(false);
       return;
     }
 
-    setLoading(true);
-
     try {
-      // Sign in with Supabase
+      // Sign in with Supabase v2
       const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
         email: email.trim(),
-        password: password
+        password,
       });
 
       if (signInError) {
-        // Authentication error
+        // common cases: wrong password, no user, email not confirmed
         setError(signInError.message || "Login failed. Check your credentials.");
         setLoading(false);
         return;
       }
 
-      // Get user (v2)
+      // Wait briefly for client to establish session so RLS will see auth.uid()
+      const session = await waitForSession(8000, 300);
+      if (!session) {
+        // Could be email confirmation required (common) → guide the user
+        setError(
+          "Signed in but session not ready. If your account requires email confirmation, please confirm your email and then log in."
+        );
+        setLoading(false);
+        return;
+      }
+
+      // Now get the user
       const {
-        data: { user }
+        data: { user },
       } = await supabase.auth.getUser();
 
       if (!user) {
@@ -65,10 +88,9 @@ export default function Login() {
         setLoading(false);
         return;
       }
-
       const userId = user.id;
 
-      // Check for existing profile
+      // Ensure a 'profiles' row exists for this user. Insert only if missing.
       const { data: existingProfile, error: profileErr } = await supabase
         .from("profiles")
         .select("id, role, name")
@@ -77,15 +99,15 @@ export default function Login() {
 
       if (profileErr) {
         console.warn("profiles query error:", profileErr);
-        // continue — we'll attempt to create if missing
+        // Not fatal — attempt insert next if missing
       }
 
-      // If no profile exists, create one with the selected role
       if (!existingProfile) {
+        // create profile with selected role
         const profileInsert = {
           id: userId,
-          role: role.toLowerCase(), // store lowercase to match schema convention
-          name: email.split("@")[0] // default name from email local-part
+          role: role.toLowerCase(),
+          name: email.split("@")[0] || user.email?.split("@")[0] || "User",
         };
 
         const { error: insertErr } = await supabase
@@ -93,17 +115,19 @@ export default function Login() {
           .insert(profileInsert, { returning: "representation" });
 
         if (insertErr) {
-          // profile creation failed but auth succeeded — show error
-          setError("Signed in but failed to create profile. Contact support.");
+          // This is often the RLS error if session/auth not established; log the error and show message
+          console.error("Profile insert error:", insertErr);
+          setError(
+            "Signed in but failed to create profile. If you recently signed up, confirm your email and log in to complete setup. Otherwise contact support."
+          );
           setLoading(false);
           return;
         }
       } else {
-        // If profile exists but role mismatches selection, handle gracefully:
+        // profile exists — check role mismatch
         const normalizedExistingRole = (existingProfile.role || "").toLowerCase();
         const normalizedSelected = role.toLowerCase();
         if (normalizedExistingRole && normalizedExistingRole !== normalizedSelected) {
-          // Don't overwrite silently: inform the user and stop to avoid accidental role switches.
           setError(
             `Your account role is "${existingProfile.role}". To sign in as "${role}" choose the correct role or update your profile.`
           );
@@ -112,14 +136,13 @@ export default function Login() {
         }
       }
 
-      // Navigate according to role selection
+      // Navigate to appropriate dashboard
       if (role === "Investor") {
         navigate("/investor-dashboard");
       } else if (role === "Founder") {
         navigate("/founder-dashboard");
       } else {
-        // Visitor or fallback
-        navigate("/");
+        navigate("/visitor");
       }
     } catch (err) {
       console.error("Login error:", err);
@@ -190,7 +213,7 @@ export default function Login() {
           </form>
 
           <p className="bottom-text">
-            Don't have an account? <a href="#signup" className="signup-link">Sign Up</a>
+            Don't have an account? <a href="/signup" className="signup-link">Sign Up</a>
           </p>
 
           <button className="btn-back" onClick={() => navigate("/")}>
