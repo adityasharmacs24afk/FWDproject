@@ -43,6 +43,7 @@ body {
 /* Header */
 .lp-header {
   position: fixed;
+  
   top: 0;
   left: 0;
   right: 0;
@@ -126,6 +127,9 @@ body {
   transition: var(--transition);
 }
 
+
+
+
 .nav-links a:hover::after {
   width: 100%;
 }
@@ -167,7 +171,7 @@ body {
 
 /* Main Content */
 main {
-  padding-top: 80px; /* Account for fixed header */
+  padding-top: 120px; /* Account for fixed header */
 }
 
 /* Hero Section */
