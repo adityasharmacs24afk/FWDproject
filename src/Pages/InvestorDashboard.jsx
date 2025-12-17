@@ -25,10 +25,10 @@ export default function InvestorDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Helper: format numeric safe
-  const safeNumber = (v) => (typeof v === 'number' ? v : Number(v) || 0);
+// Helper: format numeric safe
+const safeNumber = (v) => (typeof v === 'number' ? v : Number(v) || 0);
 
-  useEffect(() => {
+useEffect(() => {
     let mounted = true;
 
     async function loadInvestorData() {
@@ -55,15 +55,34 @@ export default function InvestorDashboard() {
           .single();
 
         // 2) Get investor_interest rows for this investor
-        const { data: interests, error: interestsErr } = await supabase
-          .from('investor_interest')
-          .select('id, idea_id, status, amount, created_at, updated_at')
-          .eq('investor_id', userId);
+// 2) Get investments for this investor (CORRECT TABLE)
+const { data: investmentsData, error: investmentsErr } = await supabase
+  .from('investments')
+  .select(`
+    id,
+    idea_id,
+    amount,
+    payment_status,
+    created_at,
+    ideas (
+      id,
+      title,
+      industry,
+      founder_id
+    )
+  `)
+  .eq('investor_id', userId)
+  .eq('payment_status', 'success');
 
-        if (interestsErr) throw interestsErr;
+
+
+
+        if (investmentsErr) throw investmentsErr;
+
 
         // Collect idea ids
-        const ideaIds = interests?.map((r) => r.idea_id).filter(Boolean) ?? [];
+        const ideaIds = investmentsData.map(inv => inv.idea_id);
+
 
         // 3) Fetch idea details for those ids
         let ideasById = {};
@@ -104,41 +123,40 @@ export default function InvestorDashboard() {
         }
 
         // 5) Compute the investedIdeas array
-        const investedIdeas = (interests || []).map((intr) => {
-          const idea = ideasById[intr.idea_id] || {};
-          const founderProfile = foundersById[idea.founder_id] || {};
-          return {
-            id: idea.id ?? intr.idea_id,
-            title: idea.title ?? 'Untitled Idea',
-            founder: founderProfile.name ?? 'Unknown Founder',
-            category: idea.industry ?? 'Unknown',
-            investedAmount: safeNumber(intr.amount),
-            status: intr.status ?? 'interested'
-          };
-        });
+const investedIdeas = investmentsData.map(inv => ({
+  id: inv.idea_id,
+  title: inv.ideas?.title || 'Untitled Idea',
+  founder: 'Founder', // optional for now
+  category: inv.ideas?.industry || 'Unknown',
+  investedAmount: safeNumber(inv.amount),
+  status: inv.payment_status
+}));
+
 
         // 6) Build investments array (mapped from investedIdeas)
-        const investments = investedIdeas.map((it, idx) => ({
-          id: idx + 1,
-          name: it.title,
-          amount: it.investedAmount,
-          currentValue: it.investedAmount,
-          status: it.status === 'interested' ? 'Pending' : it.status
-        }));
+const investments = investmentsData.map(inv => ({
+  id: inv.id,              // React key
+  dbId: inv.id,            // REAL Supabase investment id
+  name: inv.ideas?.title,
+  amount: safeNumber(inv.amount),
+  currentValue: safeNumber(inv.amount),
+  status: inv.payment_status
+}));
+
 
         // 7) recentTransactions
-        const recentTransactions = (interests || [])
-          .slice()
-          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-          .slice(0, 10)
-          .map((t, i) => ({
-            id: t.id ?? i + 1,
-            type: t.status === 'invested' ? 'Investment' : 'Activity',
-            description:
-              (ideasById[t.idea_id]?.title ? `Activity on "${ideasById[t.idea_id].title}"` : 'Investment activity'),
-            amount: safeNumber(t.amount),
-            date: t.created_at ? new Date(t.created_at).toISOString().slice(0, 10) : ''
-          }));
+        const recentTransactions = investmentsData
+  .slice()
+  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+  .map((inv, i) => ({
+    id: inv.id ?? i + 1,
+    type: 'Investment',
+    description: `Invested in "${inv.ideas?.title}"`,
+    amount: safeNumber(inv.amount),
+    date: new Date(inv.created_at).toISOString().slice(0, 10)
+  }));
+
+
 
         // 8) Totals calculations
         const totalInvestment = investments.reduce((s, it) => s + safeNumber(it.amount), 0);
@@ -178,6 +196,37 @@ export default function InvestorDashboard() {
     idea.founder.toLowerCase().includes(searchQuery.toLowerCase()) ||
     idea.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
+const handleWithdraw = async (investmentId) => {
+  const confirmWithdraw = window.confirm(
+    "This will withdraw YOUR investment only. Continue?"
+  );
+
+  if (!confirmWithdraw) return;
+
+  const { error } = await supabase
+    .from('investments')
+    .delete()
+    .eq('id', investmentId)
+    .eq('investor_id', (await supabase.auth.getUser()).data.user.id);
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  // Update UI (no reload)
+  setPortfolioData(prev => ({
+    ...prev,
+    investments: prev.investments.filter(inv => inv.dbId !== investmentId),
+    investedIdeas: prev.investedIdeas.filter(idea => idea.id !== investmentId)
+  }));
+
+  alert("Your investment has been withdrawn");
+};
+
+
+
+
 
   return (
     <div className="investor-dashboard">
@@ -208,9 +257,22 @@ export default function InvestorDashboard() {
       </section>
 
       <section className="actions-section">
-        <button className="btn btn-primary">Make New Investment</button>
-        <button className="btn btn-secondary">Withdraw Funds</button>
-        <button className="btn btn-secondary">View Reports</button>
+        <button
+  className="btn btn-primary"
+  onClick={() => navigate('/investor-explore')}
+>
+  Make New Investment
+</button>
+
+
+
+        <button
+  className="btn btn-secondary"
+  onClick={() => navigate('/investor-reports')}
+>
+  View Reports
+</button>
+
         <button
           className="btn btn-secondary"
           onClick={() => navigate('/investor-feed')}
@@ -279,17 +341,34 @@ export default function InvestorDashboard() {
               <th>Status</th>
             </tr>
           </thead>
-          <tbody>
-            {portfolioData.investments.map(inv => (
-              <tr key={inv.id}>
-                <td>{inv.name}</td>
-                <td>${inv.amount.toLocaleString()}</td>
-                <td>${inv.currentValue.toLocaleString()}</td>
-                <td className="gain-cell">${(inv.currentValue - inv.amount).toLocaleString()}</td>
-                <td><span className={`status ${inv.status.toLowerCase()}`}>{inv.status}</span></td>
-              </tr>
-            ))}
-          </tbody>
+<tbody>
+  {portfolioData.investments.map(inv => (
+    <tr key={inv.id}>
+      <td>{inv.name}</td>
+      <td>${inv.amount.toLocaleString()}</td>
+      <td>${inv.currentValue.toLocaleString()}</td>
+      <td className="gain-cell">
+        ${(inv.currentValue - inv.amount).toLocaleString()}
+      </td>
+      <td>
+        <span className={`status ${inv.status.toLowerCase()}`}>
+          {inv.status}
+        </span>
+      </td>
+      <td>
+        {inv.status === 'success' && (
+          <button
+            className="btn btn-danger btn-sm"
+            onClick={() => handleWithdraw(inv.dbId)}
+          >
+            Withdraw
+          </button>
+        )}
+      </td>
+    </tr>
+  ))}
+</tbody>
+
         </table>
       </section>
 
@@ -314,3 +393,4 @@ export default function InvestorDashboard() {
     </div>
   );
 }
+

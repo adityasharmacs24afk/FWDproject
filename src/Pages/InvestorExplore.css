@@ -1,0 +1,161 @@
+/* ====== PAGE LAYOUT ====== */
+.investor-explore {
+  padding: 30px 40px;
+  background-color: #f9fafb;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+.investor-explore h1 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.investor-explore p.subtitle {
+  color: #6b7280;
+  margin-bottom: 30px;
+}
+
+/* ====== SEARCH BAR ====== */
+.explore-search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.explore-search input {
+  width: 100%;
+  max-width: 420px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border 0.2s ease;
+}
+
+.explore-search input:focus {
+  border-color: #6d28d9;
+}
+
+/* ====== IDEAS GRID ====== */
+.explore-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* ====== IDEA CARD ====== */
+.explore-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.explore-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* ====== CARD HEADER ====== */
+.explore-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.explore-card .industry {
+  font-size: 0.75rem;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background-color: #ede9fe;
+  color: #6d28d9;
+  font-weight: 500;
+}
+
+.explore-card .stage {
+  font-size: 0.75rem;
+  color: #059669;
+  font-weight: 600;
+}
+
+/* ====== CARD BODY ====== */
+.explore-card h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.explore-card .founder {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+.explore-card .description {
+  font-size: 0.9rem;
+  color: #4b5563;
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+
+/* ====== FUNDING ====== */
+.explore-card .funding {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #374151;
+  margin-bottom: 16px;
+}
+
+.explore-card .funding span strong {
+  color: #111827;
+}
+
+/* ====== ACTION BUTTON ====== */
+.explore-card .btn-invest {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #6d28d9, #7c3aed);
+  color: white;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.15s ease;
+}
+
+.explore-card .btn-invest:hover {
+  background: linear-gradient(135deg, #5b21b6, #6d28d9);
+  transform: scale(1.02);
+}
+
+/* ====== EMPTY STATE ====== */
+.no-ideas {
+  text-align: center;
+  color: #6b7280;
+  margin-top: 60px;
+  font-size: 1rem;
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 768px) {
+  .investor-explore {
+    padding: 20px;
+  }
+
+  .investor-explore h1 {
+    font-size: 1.8rem;
+  }
+}

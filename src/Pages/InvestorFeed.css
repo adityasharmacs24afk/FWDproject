@@ -473,3 +473,26 @@
     padding: 0 1rem;
   }
 }
+
+.feed-header {
+  margin-bottom: 40px; /* 👈 creates space below navbar */
+}
+
+
+.ideas-section {
+  padding-top: 24px;
+}
+
+
+.investor-feed {
+  max-width: 1200px;
+  margin: 0 auto;        /* centers content */
+  padding: 0 24px 60px;  /* left-right + bottom spacing */
+}
+
+
+.feed-header {
+  border-bottom: 1px solid #eaeaf3;
+  padding-bottom: 24px;
+}
+
