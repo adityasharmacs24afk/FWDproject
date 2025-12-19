@@ -223,14 +223,10 @@ export default function Login() {
 
         {/* Illustration column (keeps your design aesthetic) */}
         <div className="login-right" aria-hidden>
-          <img
-            src="/mnt/data/b0d490eb-6059-410f-ac94-7883322f9e38.png"
-            alt="illustration"
-            className="login-illustration"
-          />
+
           <div className="illustration-blurb">
-            <h3>Secure & Fast</h3>
-            <p>Sign in to access tailored dashboards, analytics, and network with the right investors.</p>
+            <h3>Pitch Sphere</h3>
+            <p>Sign in to access bottomless scope of ideas, analytics, and network with the right investors.</p>
           </div>
         </div>
       </div>
