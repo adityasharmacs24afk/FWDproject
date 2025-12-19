@@ -49,9 +49,7 @@ export default function App() {
           </div>
 
           <nav className="nav-links" aria-label="Main navigation">
-            <a href="#features">Features</a>
-            <a href="#how">How it Works</a>
-            <a href="#testimonials">Testimonials</a>
+
 
             {/* AUTH BUTTONS IN NAVBAR */}
             <div className="nav-auth">
@@ -109,8 +107,8 @@ export default function App() {
                 className="illustration"
               />
               <div className="mock-overlay">
-                <h3>Featured Startup</h3>
-                <p>AI marketplace for sustainable packaging.</p>
+                <h3>why ?</h3>
+                <p>To invest in world changing ideas..</p>
               </div>
             </div>
           </div>
@@ -125,11 +123,7 @@ export default function App() {
               <p>Share your innovative concepts with our community of forward-thinking investors.</p>
             </div>
 
-            <div className="feature" data-animate>
-              <div className="icon">🎯</div>
-              <h4>Smart Matching</h4>
-              <p>AI-powered algorithm connects ideas with investors based on interests and expertise.</p>
-            </div>
+
 
             <div className="feature" data-animate>
               <div className="icon">📊</div>

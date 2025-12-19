@@ -68,6 +68,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
 .logo-mark {
@@ -92,7 +93,7 @@ body {
 }
 
 .logo-text {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 700;
   color: var(--primary-purple);
   letter-spacing: -0.025em;
@@ -692,3 +693,4 @@ ol.list{
   outline: 2px solid var(--primary-purple);
   outline-offset: 2px;
 }
+

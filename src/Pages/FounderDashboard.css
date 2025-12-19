@@ -39,7 +39,8 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
+  
 }
 
 .logo-circle {
