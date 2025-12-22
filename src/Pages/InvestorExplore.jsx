@@ -4,6 +4,8 @@ import './InvestorExplore.css';
 
 export default function InvestorExplore() {
   const [ideas, setIdeas] = useState([]);
+  const [messages, setMessages] = useState([]);
+
   const [loading, setLoading] = useState(true);
 
   // 🔹 LOAD IDEAS
@@ -26,6 +28,32 @@ export default function InvestorExplore() {
 
     loadIdeas();
   }, []);
+
+
+
+  useEffect(() => {
+  async function loadMessages() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from('messages')
+      .select(`
+        id,
+        content,
+        created_at,
+        profiles:sender_id ( name ),
+        ideas:idea_id ( title )
+      `)
+      .eq('receiver_id', user.id)
+      .order('created_at', { ascending: false });
+
+    if (!error) setMessages(data || []);
+  }
+
+  loadMessages();
+}, []);
+
 
   // 🔹 INVEST HANDLER (NEW)
   const handleInvest = async (ideaId) => {
@@ -82,6 +110,27 @@ export default function InvestorExplore() {
           </div>
         ))}
       </div>
+      <hr style={{ margin: '40px 0' }} />
+
+<h2>Messages from Founders</h2>
+
+{messages.length === 0 ? (
+  <p>No messages yet</p>
+) : (
+  <div className="ideas-grid">
+    {messages.map(msg => (
+      <div key={msg.id} className="idea-card">
+        <h3>{msg.profiles?.name}</h3>
+        <p><strong>Startup:</strong> {msg.ideas?.title}</p>
+        <p>{msg.content}</p>
+        <small style={{ color: '#6b7280' }}>
+          {new Date(msg.created_at).toLocaleString()}
+        </small>
+      </div>
+    ))}
+  </div>
+)}
+
     </div>
   );
 }
