@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // new (correct)
 import { supabase } from "../lib/supabaseClient";
-
+import FounderMessages from "./FounderMessages";
 
 import './InvestorDashboard.css';
 
@@ -285,6 +285,13 @@ const handleWithdraw = async (investmentId) => {
         >
           Edit Profile
         </button>
+<button className="btn btn-secondary"
+ onClick={() => navigate('/founder-messages')}>
+  Messages
+</button>
+
+
+
       </section>
 
       {/* Invested Ideas Section */}
