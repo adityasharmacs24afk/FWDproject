@@ -50,12 +50,17 @@ const FounderDashboard = () => {
       setFounderName(profile?.name || 'Founder');
 
       // My ideas
-      const { data: myIdeas } = await supabase
-        .from('ideas')
-        .select('*')
-        .eq('founder_id', user.id);
+const { data: myIdeas, error } = await supabase
+  .from('ideas')
+  .select('*')
+  .eq('founder_id', user.id);
 
-      setIdeas(myIdeas || []);
+if (error) {
+  console.error('IDEAS FETCH ERROR:', error);
+}
+
+setIdeas(myIdeas || []);
+
       if (myIdeas && myIdeas.length > 0) {
   const { data: investments, error } = await supabase
     .from('investments')
@@ -89,15 +94,18 @@ if (error) {
 
 
 if (!error) {
-  setMyInvestors(
-    (investors || []).map((inv) => ({
-      id: inv.id,
-      name: inv.investor?.name,
-      startup: inv.idea?.title,
-      amount: inv.amount,
-      date: new Date(inv.created_at).toDateString()
-    }))
-  );
+setMyInvestors(
+  (investors || []).map(inv => ({
+    id: inv.id,
+    investorId: inv.investor_id,
+    name: inv.profiles?.name || 'Investor',
+    startup: inv.ideas?.title || 'Startup',
+    amount: inv.amount,
+    date: new Date(inv.created_at).toDateString(),
+    ideaId: inv.idea_id
+  }))
+);
+
 }
 
       } else {
@@ -187,6 +195,28 @@ const handleSubmit = async () => {
 
   // close modal + refresh
   setShowModal(false);
+};
+  const handleMessageInvestor = async (investor) => {
+  const message = prompt(`Message to ${investor.name}:`);
+
+  if (!message) return;
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
+
+  const { error } = await supabase.from('messages').insert({
+    sender_id: user.id,               // founder
+    receiver_id: investor.investorId, // investor
+    idea_id: investor.ideaId,
+    content: message
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  alert("Message sent successfully");
 };
 
 
@@ -284,9 +314,14 @@ const handleSubmit = async () => {
                   </div>
 
                   <div className="card-footer" style={{ justifyContent: 'center' }}>
-                    <button className="btn-outline" style={{ width: '100%' }}>
-                      Message Investor
-                    </button>
+                    <button
+  className="btn-outline"
+  style={{ width: '100%' }}
+  onClick={() => handleMessageInvestor(inv)}
+>
+  Message Investor
+</button>
+
                   </div>
                 </div>
               ))}
